@@ -6,13 +6,13 @@ url <- "https://www.cftc.gov/dea/newcot/deafut.txt"
 
 # download the header file here [https://www.cftc.gov/MarketReports/CommitmentsofTraders/HistoricalViewable/cotvariableslegacy.html]
 # ad copy the content to a csv file
-pathToHeaderFile <- 'C:\\Users\\barth\\Desktop\\cot129.csv'
+pathToHeaderFile <- ''
 
 # Path to store the study
-pathToStorage <-  'C:\\Users\\barth\\Desktop\\cot-nas.csv'
+pathToStorage <-  ''
 
 # What asset are we looking for
-assetToFind <- ASSET_NASDAQ
+assetToFind <- ASSET_SP500
 
 # Read data from CFTC into a table
 table <- read.table(url, sep = ",")
@@ -27,7 +27,6 @@ colnames(table) <- tableHeader$V1
 assetTable <- subset(table, table$`Market and Exchange Names` == assetToFind)
 
 # Fetch only the columns of interest for the asset table
-printPreview <- subset(summary, select = c("As of Date in Form YYMMDD", "Market and Exchange Names", "Commercial Positions-Long (All)","Commercial Positions-Short (All)"))
+printPreview <- subset(assetTable, select = c("As of Date in Form YYMMDD", "Market and Exchange Names", "Commercial Positions-Long (All)","Commercial Positions-Short (All)"))
 
 write.table(printPreview, pathToStorage, sep = "|", col.names = FALSE, row.names = FALSE)
-
