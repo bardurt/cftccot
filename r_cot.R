@@ -3,10 +3,10 @@ url <- "https://www.cftc.gov/dea/newcot/deafut.txt"
 
 # download the header file here [https://www.cftc.gov/MarketReports/CommitmentsofTraders/HistoricalViewable/cotvariableslegacy.html]
 # ad copy the content to a csv file
-pathToHeaderFile <- 'C:\\Users\\barth\\Desktop\\cot129.csv'
+pathToHeaderFile <- '[path to header file]'
 
 # Path to store the study
-pathToStorage <-  'C:\\Users\\barth\\Desktop\\cot-nas.csv'
+pathToStorage <-  '[add your path here]'
 
 # What asset are we looking for
 assetToFind = 'NASDAQ MINI - CHICAGO MERCANTILE EXCHANGE'
