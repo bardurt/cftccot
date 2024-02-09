@@ -29,4 +29,6 @@ assetTable <- subset(table, table$`Market and Exchange Names` == assetToFind)
 # Fetch only the columns of interest for the asset table
 printPreview <- subset(assetTable, select = c("As of Date in Form YYMMDD", "Market and Exchange Names", "Commercial Positions-Long (All)","Commercial Positions-Short (All)"))
 
-write.table(printPreview, pathToStorage, sep = "|", col.names = FALSE, row.names = FALSE)
+# Write to table, append to bottom if already exist
+write.table(printPreview, pathToStorage, sep = "|",  append=TRUE, quote = FALSE, col.names = FALSE, row.names = FALSE)
+
