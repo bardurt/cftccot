@@ -1,46 +1,72 @@
-# List of assets for study
-assetList <- list("NASDAQ MINI - CHICAGO MERCANTILE EXCHANGE", "E-MINI S&P 500 - CHICAGO MERCANTILE EXCHANGE")
+columnsForStudy <- c("As.of.Date.in.Form.YYMMDD", 
+                     "Market.and.Exchange.Names", 
+                     "Commercial.Positions.Long..All.", 
+                     "Commercial.Positions.Short..All.")
 
-# List of IDs associated to a given asset
-idList <- list("nasdaq", "sp500")
 
-itemsForStudy <- c("As of Date in Form YYMMDD", "Market and Exchange Names", "Commercial Positions-Long (All)","Commercial Positions-Short (All)")
+assetList <- list("NASDAQ MINI - CHICAGO MERCANTILE EXCHANGE",
+                  "E-MINI S&P 500 - CHICAGO MERCANTILE EXCHANGE",
+                  "WHEAT-SRW - CHICAGO BOARD OF TRADE",
+                  "WTI FINANCIAL CRUDE OIL - NEW YORK MERCANTILE EXCHANGE",
+                  "GOLD - COMMODITY EXCHANGE INC.",
+                  "SILVER - COMMODITY EXCHANGE INC.")
 
-# CFTC Commitment of Traders Report
-url <- "https://www.cftc.gov/dea/newcot/deafut.txt"
+idList <- list("cot_nasdaq", 
+               "cot_sp500",
+               "cot_wheat",
+               "cot_crude_oil",
+               "cot_gold",
+               "cot_silver")
 
-# download the header file here [https://www.cftc.gov/MarketReports/CommitmentsofTraders/HistoricalViewable/cotvariableslegacy.html]
-# and copy the content to a csv file
-pathToHeaderFile <- ''
+YEAR_START = 2019
+YEAR_END = 2024
 
-# Path to store the study
-pathToStorage <-  ''
+URL_START = "C:\\Users\\barth\\Desktop\\coding\\r\\cot\\cftccot\\reports\\deacot"
 
-# Read data from CFTC into a table
-table <- read.table(url, sep = ",")
+URL_END = "\\annual.txt"
 
-# Read the table headers into a data frame  
-tableHeader <- read.csv(pathToHeaderFile, header = FALSE, sep = ",")
+PATH = "C:\\Users\\barth\\Desktop\\coding\\r\\cot\\cftccot\\data\\"
 
-# Set the table headers to the CFTC data
-colnames(table) <- tableHeader$V1
-
-# Loop through all the assets for this study
+# Loop though each asset and create a report for each year
+print("Starting")
 for (i in 1:length(assetList)) {
   
+  # The asset for this report
   asset = assetList[[i]]
-
+  
+  # Id for the file name
   id = idList[[i]]
-
+  
+  # Create file for storing current report
   fileName = paste(idList[i], ".csv", sep = "")
-  file = paste(pathToStorage, fileName, sep = "")
+  fileName = paste(PATH, fileName, sep = "")
   
-  # Fetch the table row of the asset we are looking for
-  assetTable <- subset(table, table$`Market and Exchange Names` == asset)
+  # Fetch report for each year
+  year = YEAR_START
   
-  # Fetch only the columns of interest for the asset table
-  study <- subset(assetTable, select = itemsForStudy)
-  
-  # Write to table, append to bottom if already exist
-  write.table(study, file, sep = "|",  append=TRUE, quote = FALSE, col.names = FALSE, row.names = FALSE)
+  while (year < YEAR_END) {
+    
+    # Create a dynamic path to COT data for each year
+    url <- paste(URL_START, year, sep = "")
+    url <- paste(url, URL_END, sep = "")
+    
+    # Read the report into a table
+    table <- read.table(url, header = TRUE, sep = ",")
+    
+    # Create a table for only current asset
+    assetTable <- subset(table, table$`Market.and.Exchange.Names` == asset)
+    
+    # Filter the colums of the asset
+    study <- subset(assetTable, select = itemsForStudy)
+    
+    # Revers the read table
+    revlist <- study[order(study$As.of.Date.in.Form.YYMMDD),]
+    
+    # write the table to file and append the data if the file already exists
+    write.table(revlist, fileName, sep = "|",  append=TRUE, quote = FALSE, col.names = FALSE, row.names = FALSE)
+    
+    # prepare for next report
+    year <- year + 1
+  }
 }
+print("Completed")
