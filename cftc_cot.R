@@ -21,11 +21,11 @@ idList <- list("cot_nasdaq",
 YEAR_START = 2019
 YEAR_END = 2024
 
-URL_START = "C:\\Users\\barth\\Desktop\\coding\\r\\cot\\cftccot\\reports\\deacot"
+URL_START = "reports\\deacot"
 
 URL_END = "\\annual.txt"
 
-PATH = "C:\\Users\\barth\\Desktop\\coding\\r\\cot\\cftccot\\data\\"
+PATH = "data\\"
 
 # Loop though each asset and create a report for each year
 print("Starting")
