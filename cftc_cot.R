@@ -48,7 +48,10 @@ for (i in 1:length(assetList)) {
   # Fetch report for each year
   year = YEAR_START
   
-  while (year < YEAR_END) {
+  print(paste("Fetching asset", asset, sep = " "))
+  
+  while (year <= YEAR_END) {
+    print(paste("Fetching data for", year, sep = " "))
     
     # Create a dynamic path to COT data for each year
     url <- paste(URL_START, year, sep = "")
