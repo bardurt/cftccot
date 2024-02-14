@@ -30,32 +30,32 @@ idList <- list("cot_nasdaq",
                "cot_silver",
                "cot_usd")
 
-YEAR_START = 2019
-YEAR_END = 2024
+YEAR_START <- 2019
+YEAR_END <- 2024
 
-URL_START = "reports\\deacot"
+URL_START <- "reports\\deacot"
 
-URL_END = "\\annual.txt"
+URL_END <- "\\annual.txt"
 
-PATH = "data\\"
+PATH <- "data\\"
 
 # Loop though each asset and create a report for each year
 print("Starting")
 for (i in 1:length(assetList)) {
   
   # The asset for this report
-  asset = assetList[[i]]
-  assetAlt = assetListAlt[[i]]
+  asset <- assetList[[i]]
+  assetAlt <- assetListAlt[[i]]
   
   # Id for the file name
-  id = idList[[i]]
+  id <- idList[[i]]
   
   # Create file for storing current report
-  fileName = paste(idList[i], ".csv", sep = "")
-  fileName = paste(PATH, fileName, sep = "")
+  fileName <- paste(idList[i], ".csv", sep = "")
+  fileName <- paste(PATH, fileName, sep = "")
   
   # Fetch report for each year
-  year = YEAR_START
+  year <- YEAR_START
   
   print(paste("Fetching asset", asset, sep = " "))
   
@@ -78,7 +78,7 @@ for (i in 1:length(assetList)) {
       assetTable <- subset(table, table$`Market.and.Exchange.Names` == assetAlt)
     }
     
-    # Filter the colums of the asset
+    # Filter the columns of the asset
     study <- subset(assetTable, select = columnsForStudy)
     
     # Revers the read table
