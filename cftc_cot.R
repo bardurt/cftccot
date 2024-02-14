@@ -13,6 +13,14 @@ assetList <- list("NASDAQ MINI - CHICAGO MERCANTILE EXCHANGE",
                   "SILVER - COMMODITY EXCHANGE INC.",
                   "U.S. DOLLAR INDEX - ICE FUTURES U.S.")
 
+assetListAlt <- list("NASDAQ-100 STOCK INDEX (MINI) - CHICAGO MERCANTILE EXCHANGE",
+                  "E-MINI S&P 500 STOCK INDEX - CHICAGO MERCANTILE EXCHANGE",
+                  "",
+                  "",
+                  "",
+                  "",
+                  "USD INDEX - ICE FUTURES U.S.")
+
 # Id for each asset, used to simplify the file name
 idList <- list("cot_nasdaq", 
                "cot_sp500",
@@ -37,6 +45,7 @@ for (i in 1:length(assetList)) {
   
   # The asset for this report
   asset = assetList[[i]]
+  assetAlt = assetListAlt[[i]]
   
   # Id for the file name
   id = idList[[i]]
@@ -62,6 +71,12 @@ for (i in 1:length(assetList)) {
     
     # Create a table for only current asset
     assetTable <- subset(table, table$`Market.and.Exchange.Names` == asset)
+    
+    if(nrow(assetTable) == 0){
+      print("Asset table is empty")
+      print(paste("using alt name", assetAlt, sep = " "))
+      assetTable <- subset(table, table$`Market.and.Exchange.Names` == assetAlt)
+    }
     
     # Filter the colums of the asset
     study <- subset(assetTable, select = columnsForStudy)
