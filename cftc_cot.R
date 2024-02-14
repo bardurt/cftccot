@@ -1,22 +1,26 @@
+# The columns that the study will focus on
 columnsForStudy <- c("As.of.Date.in.Form.YYMMDD", 
                      "Market.and.Exchange.Names", 
                      "Commercial.Positions.Long..All.", 
                      "Commercial.Positions.Short..All.")
 
-
+# Assets of interests for this study
 assetList <- list("NASDAQ MINI - CHICAGO MERCANTILE EXCHANGE",
                   "E-MINI S&P 500 - CHICAGO MERCANTILE EXCHANGE",
                   "WHEAT-SRW - CHICAGO BOARD OF TRADE",
                   "WTI FINANCIAL CRUDE OIL - NEW YORK MERCANTILE EXCHANGE",
                   "GOLD - COMMODITY EXCHANGE INC.",
-                  "SILVER - COMMODITY EXCHANGE INC.")
+                  "SILVER - COMMODITY EXCHANGE INC.",
+                  "U.S. DOLLAR INDEX - ICE FUTURES U.S.")
 
+# Id for each asset, used to simplify the file name
 idList <- list("cot_nasdaq", 
                "cot_sp500",
                "cot_wheat",
                "cot_crude_oil",
                "cot_gold",
-               "cot_silver")
+               "cot_silver",
+               "cot_usd")
 
 YEAR_START = 2019
 YEAR_END = 2024
@@ -57,7 +61,7 @@ for (i in 1:length(assetList)) {
     assetTable <- subset(table, table$`Market.and.Exchange.Names` == asset)
     
     # Filter the colums of the asset
-    study <- subset(assetTable, select = itemsForStudy)
+    study <- subset(assetTable, select = columnsForStudy)
     
     # Revers the read table
     revlist <- study[order(study$As.of.Date.in.Form.YYMMDD),]
