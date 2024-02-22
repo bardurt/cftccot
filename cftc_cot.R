@@ -34,7 +34,7 @@ idList <- list("cot_nasdaq",
                "cot_btc")
 
 YEAR_START <- 2019
-YEAR_END <- 2024
+YEAR_END <- as.integer(format(Sys.Date(), "%Y"))
 
 URL_START <- "reports\\deacot"
 
@@ -46,6 +46,7 @@ readCotData <- function(){
   
   # Loop though each asset and create a report for each year
   print("Reading historical COT data")
+  print(paste("Study length :", YEAR_START, YEAR_END, sep = " "))
   for (i in 1:length(assetList)) {
     
     # The asset for this report
