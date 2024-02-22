@@ -6,6 +6,10 @@ The Commitment of Traders report is a weekly report that shows the holdings of d
 <br />
 <br />
 
+#### Note
+The data collectionn is only for Commercial traders, positions of non-commercial traders are not collected at the moment (might add it in the future)
+<br />
+<br />
 
 The COT data, for different assets, is stored as csv in the <b>\data</b> folder and follows this format
 <table>
