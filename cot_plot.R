@@ -15,8 +15,11 @@ plotCotData <- function(monthsBack){
   
   table <- readData("cot_sp500.csv")
   title <- "COT SP500"
-  title <- paste(title, monthsBack, "months", sep = " ")
   
+  if(monthsBack > 0){
+    title <- paste(title, monthsBack, "months", sep = " ")
+  } 
+
   plotData <- c()
   rawData <- c()
   xAxisData <- c()
@@ -73,4 +76,4 @@ plotCotData <- function(monthsBack){
   barplot(height=plotData, names=xAxisData,  col=ifelse(plotData>0,"green","red"), main = title)
 }
 
-plotCotData(-1)
+plotCotData(6)
