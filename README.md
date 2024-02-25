@@ -43,3 +43,8 @@ The COT data, for different assets, is stored as csv in the <b>\data</b> folder 
 </tr>
   
 </table>
+<br/>
+
+## Plotting Data
+The file `cot_plot.R` contains a function that reads files from `data` folder and plots the data as a barchart
+<img src="https://github.com/bardurt/cftccot/blob/main/sp500_cot_plot.png" width="1024"/>
