@@ -7,31 +7,37 @@ columnsForStudy <- c("As.of.Date.in.Form.YYMMDD",
 # Assets of interests for this study
 assetList <- list("NASDAQ MINI - CHICAGO MERCANTILE EXCHANGE",
                   "E-MINI S&P 500 - CHICAGO MERCANTILE EXCHANGE",
+                  "DJIA Consolidated - CHICAGO BOARD OF TRADE",
                   "WHEAT-SRW - CHICAGO BOARD OF TRADE",
                   "WTI FINANCIAL CRUDE OIL - NEW YORK MERCANTILE EXCHANGE",
                   "GOLD - COMMODITY EXCHANGE INC.",
                   "SILVER - COMMODITY EXCHANGE INC.",
                   "U.S. DOLLAR INDEX - ICE FUTURES U.S.",
-                  "BITCOIN - CHICAGO MERCANTILE EXCHANGE")
+                  "BITCOIN - CHICAGO MERCANTILE EXCHANGE",
+                  "CORN - CHICAGO BOARD OF TRADE")
 
 assetListAlt <- list("NASDAQ-100 STOCK INDEX (MINI) - CHICAGO MERCANTILE EXCHANGE",
-                  "E-MINI S&P 500 STOCK INDEX - CHICAGO MERCANTILE EXCHANGE",
-                  "",
-                  "",
-                  "",
-                  "",
-                  "USD INDEX - ICE FUTURES U.S.",
-                  "")
+                     "E-MINI S&P 500 STOCK INDEX - CHICAGO MERCANTILE EXCHANGE",
+                     "",
+                     "",
+                     "",
+                     "",
+                     "",
+                     "USD INDEX - ICE FUTURES U.S.",
+                     "",
+                     "")
 
 # Id for each asset, used to simplify the file name
 idList <- list("cot_nasdaq", 
                "cot_sp500",
+               "cot_djia",
                "cot_wheat",
                "cot_crude_oil",
                "cot_gold",
                "cot_silver",
                "cot_usd",
-               "cot_btc")
+               "cot_btc",
+               "cot_corn")
 
 YEAR_START <- 2019
 YEAR_END <- as.integer(format(Sys.Date(), "%Y"))
@@ -41,6 +47,8 @@ URL_START <- "reports\\deacot"
 URL_END <- "\\annual.txt"
 
 PATH <- "data\\"
+
+data <- data.frame(Date = character(), Asset = character(), Long = character(), Short = character(), stringsAsFactors = FALSE)
 
 readCotData <- function(){
   
@@ -100,4 +108,35 @@ readCotData <- function(){
   print("Completed")
 }
 
-readCotData()
+# fetch the lates report from CFTC
+fetchLatest <- function(){
+  library(httr)
+  
+  url <- "https://www.cftc.gov/dea/newcot/deafut.txt"
+  response <- GET(url, user_agent("MyApp/1.0"))
+  
+  # Check if the request was successful
+  if (status_code(response) == 200) {
+    raw_content <- content(response, "text")
+    
+    # Split the content into lines
+    lines <- strsplit(raw_content, "\n")[[1]]
+    
+    # Iterate through each line and add to dataframe
+    for (line in lines) {
+      parts <- unlist(strsplit(line, ","))
+      if (length(parts) > 12) {
+        new_row <- data.frame(Date = parts[2], Asset = parts[1], Long = as.numeric(parts[12]), Short = as.numeric(parts[13]), stringsAsFactors = FALSE)
+        assign("data", rbind(get("data"), new_row), envir = .GlobalEnv)
+      }
+    }
+    
+  } else {
+    print("Failed to retrieve data\n")
+  }
+  
+  print("Completed")
+  
+}
+
+fetchLatest()
