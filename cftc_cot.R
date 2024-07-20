@@ -55,6 +55,7 @@ readCotData <- function(){
   # Loop though each asset and create a report for each year
   print("Reading historical COT data")
   print(paste("Study length :", YEAR_START, YEAR_END, sep = " "))
+  
   for (i in 1:length(assetList)) {
     
     # The asset for this report
@@ -64,8 +65,13 @@ readCotData <- function(){
     # Id for the file name
     id <- idList[[i]]
     
+    # Create data folder if it does not exist
+    ifelse(!dir.exists(file.path(PATH)), dir.create(file.path(PATH)), FALSE)
+    
     # Create file for storing current report
     fileName <- paste(idList[i], ".csv", sep = "")
+    
+    # Create new file at data/[filename].csv
     fileName <- paste(PATH, fileName, sep = "")
     
     # Fetch report for each year
@@ -98,6 +104,7 @@ readCotData <- function(){
       # Revers the read table
       revlist <- study[order(study$As.of.Date.in.Form.YYMMDD),]
       
+    
       # write the table to file and append the data if the file already exists
       write.table(revlist, fileName, sep = "|",  append=TRUE, quote = FALSE, col.names = FALSE, row.names = FALSE)
       
@@ -141,9 +148,6 @@ fetchLatest <- function(){
 
 readData <- function(fileName){
   
-  # Path to the folder that contains the file
-  PATH <- "data/"
-  
   # Create a complete path to file ex "data/cot_sp500.csv"
   file = paste(PATH, fileName, sep="")
   
@@ -180,8 +184,7 @@ plotCotData <- function(monthsBack){
   }
   
   start = (nrow(table) - dataCount) +1
-  
-  print(start)
+
   
   index <- 1
   
@@ -217,4 +220,4 @@ plotCotData <- function(monthsBack){
   barplot(height=plotData, names=xAxisData,  col=ifelse(plotData>0,"green","red"), main = title)
 }
 
-fetchLatest()
+plotCotData(-1)
